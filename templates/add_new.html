@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Add New Blog Post</title>
+</head>
+<body>
+    <form action='{{url_for("new_post")}}' method="post">
+        <table>
+            <tr>
+                <td><b>Blog Post Title:</b></td>
+                <td><input type="text" name="title"></td>
+            </tr>
+            <tr>
+                <td><b>Blog Post Author:</b></td>
+                <td><input type="text" name="author"></td>
+            </tr>
+            <tr>
+                <td><b>Blog Post Content:</b></td>
+                <td><textarea name="post" rows=10 cols=80></textarea></td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+    <a href='{{url_for("return_blogs_list")}}'>Back to main</a>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>Blog Post Listing</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th> Post Title </th>
+            <th> Post Author </th>
+            <th> Posting Date </th>
+        </tr>
+        {% for blog_post in blog_posts %}
+        <tr>
+            <td><a href='{{url_for("return_blog_post", post_id=blog_post.id)}}'>{{blog_post.title}}</a></td>
+            <td>{{blog_post.author}}</td>
+            <td>{{blog_post.created_date.strftime("%d-%m-%Y")}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <a href='{{url_for("new_post")}}'>Create a new post</a>
+</body>
+</html>
