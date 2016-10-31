@@ -23,4 +23,4 @@ Now you can run the app using:
 python webapp.py
 ```
 
-By default the application runs on port 5000 in debug mode. This means that in case of any errors, a stack trace and debug prompt will be shown in your browser. You may also use a debugger to connect to the application directly and debug it.
+By default the application runs on port 5000 and currently we have set it to run in debug mode. This means that in case of any errors, a stack trace and debug prompt will be shown in your browser. You may also use a debugger to connect to the application directly and debug it.
