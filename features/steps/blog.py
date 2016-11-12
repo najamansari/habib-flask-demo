@@ -1,8 +1,12 @@
+import random
 from behave import given, when, then
+from habib.controller import blog_post
+
+random.seed()
 
 
-@given(u'a user visits the {uri}')
-def step_impl(context):
+@given(u'a user visits the {page}')
+def step_impl(context, page):
     pass
 
 
@@ -10,12 +14,12 @@ def step_impl(context):
 def step_impl(context, verb, uri):
     if "GET" == verb:
         context.response = context.app.get(uri)
-#    if "POST" == verb: ##Maybe?
- #   	context.app.create(uri)
+    elif "POST" == verb:
+        context.response = context.app.post(uri, data=context.form)
 
 
-@then(u'the index page should be returned')
-def step_impl(context):
+@then(u'the {page} should be returned')
+def step_impl(context, page):
     context.response_data = context.response.get_data()
 
 
@@ -53,17 +57,44 @@ def step_impl(context):
     return context.app.get('/blog')
 
 
-@then(u'the /blog/{ID} should be returned')
-def step_impl(context,id):
-    if context.app.get('/blog/'+str(id)): #exists#:
-    	return context.app.get('/blog/id')
-    else:
-    	raise AssertionError
 @then(u'return new blog post form')
 def step_impl(context):
     return context.app.get('/blog/new')
 
-@then(u'create a new blog post')
+
+@then(u'the status code should be {status:d}')
+def step_impl(context, status):
+    assert status == context.response.status_code
+
+
+@given(u'a user wants to open a blog post that exists')
 def step_impl(context):
-    #Dont know how to do this.##raise NotImplementedError(u'STEP: Then create a new blog post')
-    pass
+    context.blog_post_id = blog_post.get_random_id()
+
+
+@when(u'the user opens the blog post')
+def step_impl(context):
+    context.response = context.app.get('/blog/%d' % context.blog_post_id)
+
+
+@given(u'a user wants to open a blog post that does not exist')
+def step_impl(context):
+    context.blog_post_id = random.randint(-100, 0)
+
+
+@given(u'the user wants to create a blog post')
+def step_impl(context):
+    context.form = {}
+
+
+@given(u'the {keyword} is {value}')
+def step_impl(context, keyword, value):
+    context.form[keyword] = value
+
+
+@then(u'the new post should be created in the database')
+def step_impl(context):
+    assert blog_post.get_post_by_title_author_and_post(
+        context.form.get("title"), context.form.get("post"),
+        context.form.get("author")
+    )

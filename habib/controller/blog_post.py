@@ -34,3 +34,27 @@ def add_post(title, post, author):
     )
     database.Session().add(new_entry)
     database.Session.commit()
+
+
+def get_random_id():
+    """Returns the ID of a single blog post from the database.
+
+    If the database is empty, should result in an error.
+    """
+    return database.Session.query(database.BlogPost.id).first()[0]
+
+
+def get_post_by_title_author_and_post(title, post, author):
+    """Looks for the given information in the database.
+
+    :param title: The title of the blog post
+    :param post: The post content
+    :param author: The author of the blog post
+    """
+    return database.Session.query(database.BlogPost).filter(
+        database.BlogPost.title == title
+    ).filter(
+        database.BlogPost.post == post
+    ).filter(
+        database.BlogPost.author == author
+    ).all()
