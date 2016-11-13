@@ -1,7 +1,7 @@
 from behave import given, when, then
 
 
-@given(u'a user visits the index page')
+@given(u'a user visits the {uri}')
 def step_impl(context):
     pass
 
@@ -10,6 +10,8 @@ def step_impl(context):
 def step_impl(context, verb, uri):
     if "GET" == verb:
         context.response = context.app.get(uri)
+#    if "POST" == verb: ##Maybe?
+ #   	context.app.create(uri)
 
 
 @then(u'the index page should be returned')
@@ -45,3 +47,23 @@ def step_impl(context, header, content_type):
 # @then(u'all row tags should contain 3 elements')
 # def step_impl(context):
 #     raise NotImplementedError(u'STEP: Then all row tags should contain 3 elements')
+
+@then(u'the user gets redirected to /blog')
+def step_impl(context):
+    return context.app.get('/blog')
+
+
+@then(u'the /blog/{ID} should be returned')
+def step_impl(context,id):
+    if context.app.get('/blog/'+str(id)): #exists#:
+    	return context.app.get('/blog/id')
+    else:
+    	raise AssertionError
+@then(u'return new blog post form')
+def step_impl(context):
+    return context.app.get('/blog/new')
+
+@then(u'create a new blog post')
+def step_impl(context):
+    #Dont know how to do this.##raise NotImplementedError(u'STEP: Then create a new blog post')
+    pass
